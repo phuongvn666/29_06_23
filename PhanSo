@@ -1,0 +1,147 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace phanSo
+{
+
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+        public class PhanSo
+        {
+            private int _ts;
+            private int _ms;
+
+            public int Ts { get => _ts; set => _ts = value; }
+            public int Ms { get => _ms; set => _ms = value; }
+            public PhanSo(int ts = 1, int ms = 1)
+            {
+                _ts = ts;
+                _ms = ms;
+            }
+            public PhanSo Rutgon()
+            {
+                PhanSo ps = new PhanSo();
+                ps.Ts = _ts;
+                ps.Ms = _ms;
+                int ts1 = Ts;
+                if (Ts < 0) ts1 = -ts1;
+                int a = ts1;
+                int b = ps.Ms;
+                while (a != b)
+                {
+                    if (a > b)
+                    {
+                        a -= b;
+                    }
+                    else
+                    {
+                        b -= a;
+                    }
+                    ps.Ts = _ts / a;
+                    ps.Ms = _ms / a;
+                }
+                return ps;
+            }
+        }
+        
+        public PhanSo Tong(PhanSo ps1,PhanSo ps2)
+        {
+            PhanSo tong = new PhanSo();
+            tong.Ts = ps1.Ts * ps2.Ms + ps2.Ts * ps1.Ms;
+            tong.Ms = ps1.Ms * ps2.Ms;
+            return tong;
+        }
+        public PhanSo Hieu(PhanSo ps1, PhanSo ps2)
+        {
+            PhanSo hieu = new PhanSo();
+            hieu.Ts = ps1.Ts * ps2.Ms - ps2.Ts * ps1.Ms;
+            hieu.Ms = ps1.Ms * ps2.Ms;
+            return hieu;
+        }
+        public PhanSo Tich(PhanSo ps1, PhanSo ps2)
+        {
+            PhanSo tich = new PhanSo();
+            tich.Ts = ps1.Ts * ps2.Ts;
+            tich.Ms = ps1.Ms * ps2.Ms;
+            return tich;
+        }
+        public PhanSo Thuong(PhanSo ps1, PhanSo ps2)
+        {
+            PhanSo thuong = new PhanSo();
+            thuong.Ts = ps1.Ts * ps2.Ms;
+            thuong.Ms = ps1.Ms * ps2.Ts;
+            return thuong;
+        }
+        private void txtms2_TextChanged(object sender, EventArgs e)
+        {
+            PhanSo ps1 = new PhanSo(int.Parse(txtts1.Text), int.Parse(txtms1.Text));
+            PhanSo ps2 = new PhanSo(int.Parse(txtts2.Text), int.Parse(txtms2.Text));
+            PhanSo tong = Tong(ps1, ps2);
+            tong = tong.Rutgon();
+            PhanSo hieu = Hieu(ps1, ps2);
+            hieu = hieu.Rutgon();
+            PhanSo tich = Tich(ps1, ps2);
+            tich = tich.Rutgon();
+            PhanSo thuong = Thuong(ps1, ps2);
+            thuong = thuong.Rutgon();
+            txttong.Text = tong.Ts.ToString() + "/" + tong.Ms.ToString();
+            txthieu.Text = hieu.Ts.ToString() + "/" + hieu.Ms.ToString();
+            txttich.Text = tich.Ts.ToString() + "/" + tich.Ms.ToString();
+            txtthuong.Text = thuong.Ts.ToString() + "/" + thuong.Ms.ToString();
+        }
+        private void txtts1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!Char.IsDigit(e.KeyChar) && (!Char.IsControl(e.KeyChar)) && (e.KeyChar != '.'))
+                e.Handled = true;
+        }
+
+        private void txtts2_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!Char.IsDigit(e.KeyChar) && (!Char.IsControl(e.KeyChar)) && (e.KeyChar != '.'))
+                e.Handled = true;
+        }
+
+        private void txtms1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!Char.IsDigit(e.KeyChar) && (!Char.IsControl(e.KeyChar)) && (e.KeyChar != '.') && (e.KeyChar != 0))
+                e.Handled = true;
+        }
+
+        private void txtms2_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!Char.IsDigit(e.KeyChar) && (!Char.IsControl(e.KeyChar)) && (e.KeyChar != '.') && (e.KeyChar != 0))
+                e.Handled = true;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            txtts1.Clear();
+            txtms1.Clear();
+            txtts2.Clear();
+            txtms2.Clear();
+            txttong.Clear();
+            txthieu.Clear();
+            txttich.Clear();
+            txtthuong.Clear();
+            txtts1.Focus();
+        }
+    }
+
+
+}
